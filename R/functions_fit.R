@@ -1,7 +1,7 @@
 
 #' Fit the prevalence-incidence-clearance model
 #'
-#' This function fits our Prevalence-Incidence-Clearance (PIC) mixture model to interval-censored screening data and obtains parameter estimates.
+#' This function fits our Prevalence-Incidence (PI) mixture model to interval-censored screening data and obtains parameter estimates.
 #' It is possible for the user to select the covariates that will be used for each parameter.
 #'
 #' @param data Data used to fit the model containing columns for each term in l1_x and pi_x. The first three columns must be: \itemize{
