@@ -15,11 +15,11 @@ In longitudinal screening studies it is possible to observe prevalent,
 early or late events during follow-up. In our model, early events are
 modelled via a competing risks framework, infections either progress to
 the disease state or to a (latent) “clearance” state (i.e. viral
-clearance) at constant rates. Late events are modelled by adding
-background risk to the model. Parameters can depend on individual risk
-factors and are estimated with an expectation-maximisation (EM)
-algorithm with weakly informative Cauchy priors. More details are given
-in the accompanying paper.
+clearance) at constant rates. Subjects without the high-risk condition
+may also develop disease which is modelled by adding background risk.
+Parameters can depend on individual risk factors and are estimated with
+an expectation-maximisation (EM) algorithm with weakly informative
+Cauchy priors. More details are given in the accompanying paper.
 
 There are five main functions in this package:
 
@@ -54,13 +54,13 @@ library(PI3M)
 sim.thetas <- c(-5, -1.6, -1.2, -3)
 sim.dat <- PI3M.simulator(1000, params = sim.thetas, show_prob = 0.9, interval=3, include.h=T)
 head(sim.dat) # view simulated data
-#>       left    right z      age    age.std hpv cyt cause     actual
-#> 1 24.13198      Inf 0 47.08226 -0.1281307   0   0     3 135.089499
-#> 2  0.00000 2.856223 0 33.52999 -0.7261583   1   1     2   2.374809
-#> 3 23.75561      Inf 0 66.65570  0.7355958   0   0     3 313.164012
-#> 4 24.05088      Inf 0 46.16319 -0.1686869   0   1     3  73.591303
-#> 5 23.86395      Inf 0 42.63115 -0.3245471   1   0     3  75.627023
-#> 6  0.00000 3.098614 0 63.38731  0.5913699   0   0     2   1.515395
+#>       left    right z      age    age.std hpv cyt cause      actual
+#> 1 24.05106      Inf 0 30.01140 -0.8806798   0   1     3 145.4337670
+#> 2 23.92914      Inf 0 41.21616 -0.3909981   0   0     3 466.5605242
+#> 3  0.00000 2.956186 0 57.36062  0.3145629   0   1     2   0.1538514
+#> 4  0.00000 3.149824 0 67.95342  0.7774999   0   0     2   1.3967439
+#> 5  0.00000 3.070883 0 33.63634 -0.7222592   0   1     2   1.4100571
+#> 6  0.00000 3.131835 0 63.74236  0.5934641   0   1     2   0.9391358
 ```
 
 ``` r
@@ -68,10 +68,10 @@ head(sim.dat) # view simulated data
 sim.fit <- PI3M.fit(data=sim.dat) # fit model to simulated data
 sim.fit$summary # view model fit summary
 #>        param theta.hat std.dev   lower   upper
-#> h          h   -4.9690  0.1620 -5.2865 -4.6514
-#> g0 intercept   -1.5853  0.0820 -1.7460 -1.4245
-#> w0 intercept   -1.2907  0.1027 -1.4920 -1.0894
-#> p0 intercept   -3.1019  0.1624 -3.4202 -2.7836
+#> h          h   -4.9700  0.1576 -5.2789 -4.6611
+#> g0 intercept   -1.6964  0.0865 -1.8659 -1.5268
+#> w0 intercept   -1.2503  0.1066 -1.4592 -1.0414
+#> p0 intercept   -2.8194  0.1417 -3.0971 -2.5417
 ```
 
 ``` r
@@ -98,13 +98,13 @@ as a covariate for prevalence then we would do the following:
 sim.thetas.cov <- c(-5, -1.6, 1, -1.2, -3, 4)
 sim.dat2 <- PI3M.simulator(1000, prog_model = "prog ~ hpv", prev_model = "prev ~ cyt", sim.thetas.cov, show_prob = 0.9, interval=3, include.h=T)
 head(sim.dat2) # view simulated data
-#>       left    right z      age    age.std hpv cyt cause      actual
-#> 1 23.90248      Inf 0 67.41109  0.7414240   0   0     3  60.5638419
-#> 2  0.00000 2.682506 0 50.22573  0.0100072   0   1     2   0.4176361
-#> 3 23.94910      Inf 0 64.15406  0.6028036   0   0     3 103.1641465
-#> 4 23.94229      Inf 0 44.24946 -0.2443458   0   0     3 167.6269674
-#> 5 23.81414      Inf 0 63.70295  0.5836040   0   0     3 211.6056296
-#> 6 21.03203      Inf 0 38.27810 -0.4984900   0   0     3 118.3657120
+#>       left right z      age    age.std hpv cyt cause    actual
+#> 1 24.43957   Inf 0 41.00293 -0.3533606   0   0     3  30.22738
+#> 2 23.96993   Inf 0 42.72042 -0.2795450   0   1     3  68.78136
+#> 3 23.79873   Inf 0 31.39774 -0.7661805   0   0     3  55.06976
+#> 4 23.97502   Inf 0 63.23069  0.6019628   0   1     3 267.92372
+#> 5  0.00000     0 1 57.67462  0.3631694   1   1     1   0.00000
+#> 6  0.00000     0 1 64.95699  0.6761575   1   1     1   0.00000
 ```
 
 ``` r
@@ -112,12 +112,12 @@ head(sim.dat2) # view simulated data
 sim.fit2 <- PI3M.fit(sim.dat2, prog_model = "prog ~ hpv", prev_model = "prev ~ cyt") # fit model to simulated data
 sim.fit2$summary # view model fit summary
 #>        param theta.hat std.dev   lower   upper
-#> h          h   -5.0118  0.1806 -5.3658 -4.6578
-#> g0 intercept   -1.6186  0.1134 -1.8409 -1.3963
-#> g1       hpv    1.1503  0.1505  0.8553  1.4453
-#> w0 intercept   -1.1163  0.1151 -1.3419 -0.8907
-#> p0 intercept   -3.1620  0.2141 -3.5816 -2.7423
-#> p1       cyt    4.1634  0.2451  3.6830  4.6438
+#> h          h   -5.2486  0.2081 -5.6565 -4.8407
+#> g0 intercept   -1.6235  0.1061 -1.8315 -1.4156
+#> g1       hpv    1.0179  0.1483  0.7273  1.3086
+#> w0 intercept   -1.2276  0.1036 -1.4306 -1.0245
+#> p0 intercept   -2.7809  0.1826 -3.1388 -2.4231
+#> p1       cyt    3.6627  0.2137  3.2438  4.0815
 ```
 
 ``` r
@@ -155,4 +155,5 @@ legend("bottomright",
 
 ## Authors
 
-- **Kelsi R. Kroon** <k.kroon@amsterdamumc.nl>
+- **Kelsi R. Kroon** <k.kroon@amsterdamumc.nl> /
+  <kelsikroon@outlook.com>
