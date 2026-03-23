@@ -44,9 +44,9 @@
 #' @export
 #'
 #' @examples
-#' fit <- PICmodel.fit(sim.dat)
+#' fit <- PI3M.fit(sim.dat)
 #' fit$summary
-PICmodel.fit <- function(data, prog_model = 'prog ~ 1', prev_model='prev ~ 1', epsilon=1e-06, short.epsilon=1e-1, short.iter=10, short.runs=20, silent=T,  init=NULL, max.iter = 1000,
+PI3M.fit <- function(data, prog_model = 'prog ~ 1', prev_model='prev ~ 1', epsilon=1e-06, short.epsilon=1e-1, short.iter=10, short.runs=20, silent=T,  init=NULL, max.iter = 1000,
                          include.h=T, starting.h = -12, include.priors=T, prior.type = 'cauchy', fixed.h=NULL, intercept.prog = T, intercept.clear = T, intercept.prev=T){
   CPU_time <- system.time({
     # require data to be supplied as a data frame

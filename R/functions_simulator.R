@@ -20,9 +20,9 @@ NULL
 #' @author Kelsi Kroon, Hans Bogaards, Hans Berkhof
 #' @export
 #' @examples
-#' sim.df <- PICmodel.simulator(1000, prog_model = "prog ~ hpv",  c(-5, -1.6, 1, -1.2, 0.25), show_prob = 0.9, interval=3, include.h=T)
+#' sim.df <- PI3M.simulator(1000, prog_model = "prog ~ hpv",  c(-5, -1.6, 1, -1.2, 0.25), show_prob = 0.9, interval=3, include.h=T)
 #' head(sim.df)
-PICmodel.simulator <- function(n, prog_model = "prog ~ 1", prev_model = "prev ~ 1", params, show_prob = 0.9, interval=3, include.h=T, covar_settings = c(age.min = 30, age.max = 70, cyt.prob = 0.4, hpv16.prob = 0.3)){
+PI3M.simulator <- function(n, prog_model = "prog ~ 1", prev_model = "prev ~ 1", params, show_prob = 0.9, interval=3, include.h=T, covar_settings = c(age.min = 30, age.max = 70, cyt.prob = 0.4, hpv16.prob = 0.3)){
   age <- runif(n, covar_settings[1], covar_settings[2])
   age.std <- 0.5*(age - mean(age))/sd(age)
 

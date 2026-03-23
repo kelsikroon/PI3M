@@ -7,7 +7,7 @@
 #'
 #' @author Kelsi Kroon, Hans Bogaards, Hans Berkhof
 #' @export
-PICmodel.predict <- function(data, time.points, fit, calc.CI=F){
+PI3M.predict <- function(data, time.points, fit, calc.CI=F){
   model <- fit$model
   prog_model <- model[[1]]
   prev_model <- model[[2]]
